@@ -6,7 +6,7 @@
 #define MAX(a, b) ((a) > (b) ? a : b)
 #define MIN(a, b) ((a) < (b) ? a : b)
 
-static int *boxesForGauss(int sigma, int n)
+static int *boxes_for_gauss(int sigma, int n)
 {
 	double wIdeal;
 	int wl;
@@ -38,7 +38,7 @@ static int *boxesForGauss(int sigma, int n)
 	return sizes;
 }
 
-static void boxBlurH(uint8_t *scl, uint8_t *tcl, int w, int h, int r, int bpp)
+static void box_blur_H(uint8_t *scl, uint8_t *tcl, int w, int h, int r, int bpp)
 {
 	for (int i = 0; i < h; i++)
 	{
@@ -80,7 +80,7 @@ static void boxBlurH(uint8_t *scl, uint8_t *tcl, int w, int h, int r, int bpp)
 	}
 }
 
-static void boxBlurT(uint8_t *scl, uint8_t *tcl, int w, int h, int r, int bpp)
+static void box_blur_T(uint8_t *scl, uint8_t *tcl, int w, int h, int r, int bpp)
 {
 	for (int i = 0; i < w; i++)
 	{
@@ -122,20 +122,20 @@ static void boxBlurT(uint8_t *scl, uint8_t *tcl, int w, int h, int r, int bpp)
 	}
 }
 
-static void boxBlur(uint8_t *scl, uint8_t *tcl, int w, int h, int r, int bpp)
+static void box_blur(uint8_t *scl, uint8_t *tcl, int w, int h, int r, int bpp)
 {
 	for (int i = 0; i < (h * w * bpp); i++)
 	{
 		tcl[i] = scl[i];
 	}
-	boxBlurH(tcl, scl, w, h, r, bpp);
-	boxBlurT(scl, tcl, w, h, r, bpp);
+	box_blur_H(tcl, scl, w, h, r, bpp);
+	box_blur_T(scl, tcl, w, h, r, bpp);
 }
 
 void fast_gauss_blur(uint8_t *scl, uint8_t *tcl, int w, int h, int r, int bpp)
 {
-	int *bxs = boxesForGauss(r, 3);
-	boxBlur(scl, tcl, w, h, (bxs[0] - 1) / 2, bpp);
-	boxBlur(tcl, scl, w, h, (bxs[1] - 1) / 2, bpp);
-	boxBlur(scl, tcl, w, h, (bxs[2] - 1) / 2, bpp);
+	int *bxs = boxes_for_gauss(r, 3);
+	box_blur(scl, tcl, w, h, (bxs[0] - 1) / 2, bpp);
+	box_blur(tcl, scl, w, h, (bxs[1] - 1) / 2, bpp);
+	box_blur(scl, tcl, w, h, (bxs[2] - 1) / 2, bpp);
 }
