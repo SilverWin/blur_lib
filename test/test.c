@@ -19,9 +19,9 @@ int main(int argc, char **argv)
 	if (input == NULL) input = "in.png";
 	if (output == NULL) output = "out.png";
 
-	uint8_t *rgb_image = stbi_load(input, &width, &height, &bpp, 3);
+	uint8_t *rgb_image = stbi_load(input, &width, &height, &bpp, STBI_rgb);
 	if (rgb_image == NULL) {
-		printf("Cannot open input PNG file: %s\n", input);
+		printf("Cannot open input PNG file: %s reason: %s\n", input, stbi_failure_reason());
 		exit(1);
 	}
 
